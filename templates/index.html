@@ -36,23 +36,33 @@
     <div id="coordinatesDisplay"></div></p> -->
     <p id="coordinatesDisplay"></p>
     <!--parameters:(self, name, geometry, zip_code, city, state, address, global_id, distance)-->
-    <p>Starting Point: {{ return_start }}</p>
+    <p>Starting Point: {{ return_start_lng }} {{ return_start_lat }}</p>
     <p>Nearest Fire Station: {{ return_name }}</p>
     <p>Address: {{ return_address }}</p>
-    <p>Coordinates: {{ return_geometry }}</p>
+    <p>Longitude: {{ return_lng }}, Lattitude: {{ return_lat }}</p>
     <p>Distance: {{ return_distance }}</p>
     <p>Zip Code: {{ return_zip }}</p>
     <p>City: {{ return_city }}</p>
     <p>State: {{ return_state }}</p>
-    
+    <script>
+    //pass all the return values to the map
+    var js_name="{{ return_name }}";
+    var js_lat="{{ return_lat }}";
+    var js_lng="{{ return_lng }}";
+    var js_address="{{ return_address }}";
+    var js_start_lng="{{ return_start_lng }}";
+    var js_start_lat="{{ return_start_lat }}";
+    </script>
 <hr/>
     <p>The SOS button will send the closest fire station your location.</p>
 
     <!-- <img src="{{url_for('static', filename='res/high_ground.png')}}" alt="Abstract shapes directing to lower ground"> -->
     <!-- Include Leaflet JavaScript from CDN -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!--OSM:-->
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
-    <!-- Include your custom JavaScript file for the map -->
+    <!-- Include JavaScript file for the map -->
     <script src="{{url_for('static', filename='js/map.js')}}"></script>
 </body>
 </html>

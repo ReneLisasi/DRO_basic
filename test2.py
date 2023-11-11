@@ -109,7 +109,7 @@ def get_stations(starting_point,specified_state,specified_zip_code):
     #     print(f'{j.name}, {j.address}, {j.distance}')
 
 # #example code
-# specified_zip_code = '93226'
-# specified_state = 'CA'
-# starting_point=Node((35.726409,-118.700601),0)
+# specified_zip_code = '30080'
+# specified_state = 'GA'
+# starting_point=Node((33.883647588413304, -84.49361801147461),0)
 # target=get_stations(starting_point,specified_state,specified_zip_code)

@@ -25,3 +25,12 @@ nav a {
     padding: 20px; /* Add padding to the content container */
     color: rgb(0, 0, 0); /* Text color for the content */
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.red-marker {
+    background-color: red;
+}
