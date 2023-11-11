@@ -1,0 +1,51 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Application</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+        <!-- Navigation bar -->
+        <nav>
+            <!-- You can add navigation links here if needed -->
+        </nav>
+    
+        <!-- Content container -->
+        <div class="container">
+    <h1>Disaster Response</h1>
+    <hr/>
+    <h2>Click the map to find the location to send the SOS from</h2>
+    
+    <!-- Add a container for the Leaflet map -->
+    <div id="map" style="height: 400px;"></div>
+    <br>
+    <form action="{{ url_for('handle_data') }}" method="post">
+        <input type="hidden" id="clickedLocation" name="clickedLocation">
+        <label for="front_state">State</label>
+        <input type="text" id="front_state" name="front_state" placeholder="GA">
+        <label for="front_zip">Zip</label>
+        <input type="text" id="front_zip" name="front_zip" placeholder="30080">
+        <button type="Submit">SOS</button>
+    </form>
+    <!-- Add a div to display the clicked coordinates -->
+<!-- <p>
+    <div id="coordinatesDisplay"></div></p> -->
+    <p id="coordinatesDisplay"></p>
+    <p>State: {{ state }}</p>
+    <p>Zip Code: {{ zip_code }}</p>
+    <p>Clicked Location: {{ coords }}</p>
+<hr/>
+    <p>The SOS button will send the closest fire station your location.</p>
+
+    <!-- <img src="{{url_for('static', filename='res/high_ground.png')}}" alt="Abstract shapes directing to lower ground"> -->
+    <!-- Include Leaflet JavaScript from CDN -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Include your custom JavaScript file for the map -->
+    <script src="{{url_for('static', filename='js/map.js')}}"></script>
+</body>
+</html>

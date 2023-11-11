@@ -1,0 +1,32 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Application</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <h1>Hello world, this is from the template:</h1>
+    <!-- Add a container for the Leaflet map -->
+    <div id="map" style="height: 400px;"></div>
+    <form action="{{ url_for('handle_data') }}" method="post">
+        <button type="Submit">SOS</button>
+    </form>
+
+    <div id="displayContainer"></div>
+
+    <!-- Hidden input fields for clicked location, state, and zip code -->
+    <input type="hidden" id="clickedLocation">
+    <input type="hidden" id="clickedState">
+    <input type="hidden" id="clickedZipCode">
+
+    <!-- Include Leaflet JavaScript from CDN -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Include your custom JavaScript file for the map -->
+    <script src="{{url_for('static', filename='js/map.js')}}"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* css/index.css */
+
+/* Apply a red background color to the entire page */
+body {
+    background-color: #ffffffab; /* Red color */
+    margin: 0; /* Remove default body margin */
+    font-family: 'Century Gothic', sans-serif; /* Specify Century Gothic font with a fallback to sans-serif */
+}
+
+/* Style the navigation bar */
+nav {
+    background-color: #951e03; /* Slightly darker shade of red */
+    padding: 10px; /* Add padding for better appearance */
+}
+
+/* Style the navigation links (if you have any) */
+nav a {
+    color: white; /* Text color for navigation links */
+    text-decoration: none; /* Remove underlines from links */
+    margin-right: 15px; /* Adjust spacing between links */
+}
+
+/* Style the content container */
+.container {
+    padding: 20px; /* Add padding to the content container */
+    color: rgb(0, 0, 0); /* Text color for the content */
+}
