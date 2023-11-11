@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8-sig">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask Application</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
@@ -35,9 +35,16 @@
 <!-- <p>
     <div id="coordinatesDisplay"></div></p> -->
     <p id="coordinatesDisplay"></p>
-    <p>State: {{ state }}</p>
-    <p>Zip Code: {{ zip_code }}</p>
-    <p>Clicked Location: {{ coords }}</p>
+    <!--parameters:(self, name, geometry, zip_code, city, state, address, global_id, distance)-->
+    <p>Starting Point: {{ return_start }}</p>
+    <p>Nearest Fire Station: {{ return_name }}</p>
+    <p>Address: {{ return_address }}</p>
+    <p>Coordinates: {{ return_geometry }}</p>
+    <p>Distance: {{ return_distance }}</p>
+    <p>Zip Code: {{ return_zip }}</p>
+    <p>City: {{ return_city }}</p>
+    <p>State: {{ return_state }}</p>
+    
 <hr/>
     <p>The SOS button will send the closest fire station your location.</p>
 

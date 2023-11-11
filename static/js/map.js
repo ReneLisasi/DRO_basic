@@ -7,10 +7,6 @@ const map = L.map('map').setView([33.8802511, -84.5125968], 14);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 // Create a div to display the clicked coordinates
-// const coordinatesDisplay = document.createElement('div');
-// document.body.appendChild(coordinatesDisplay);
-
-// Create a div to display the clicked coordinates
 const coordinatesDisplay = document.getElementById('coordinatesDisplay');
 
 
