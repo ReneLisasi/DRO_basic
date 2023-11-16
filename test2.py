@@ -105,40 +105,93 @@ def bubble_sort(unordered_list):
                 unordered_list[j+1] = temp
     return unordered_list
 
-def brute_force(fire_stations, starting_point):
+
+
+def merge(first_sublist, second_sublist): 
+    i = j = 0
+    merged_list = []
+    while i < len(first_sublist) and j < len(second_sublist):
+        if first_sublist[i].distance < second_sublist[j].distance:
+            merged_list.append(first_sublist[i]) 
+            i += 1 
+        else:
+            merged_list.append(second_sublist[j]) 
+            j += 1
+    while i < len(first_sublist): 
+        merged_list.append(first_sublist[i]) 
+        i += 1 
+    while j < len(second_sublist):
+        merged_list.append(second_sublist[j]) 
+        j += 1
+    return merged_list 
+
+def merge_sort(unsorted_list):
+    if len(unsorted_list) == 1: 
+        return unsorted_list
+    mid_point = int(len(unsorted_list)/2)
+    first_half = unsorted_list[:mid_point] 
+    second_half = unsorted_list[mid_point:] 
+    half_a = merge_sort(first_half) 
+    half_b = merge_sort(second_half) 
+    return merge(half_a, half_b) 
+
+def selection_sort(unsorted_list): 
+    size_of_list = len(unsorted_list) 
+    for i in range(size_of_list): 
+        small = i
+        for j in range(i+1, size_of_list): 
+            if unsorted_list[j].distance < unsorted_list[small].distance: 
+                small = j
+        temp = unsorted_list[i] 
+        unsorted_list[i] = unsorted_list[small] 
+        unsorted_list[small] = temp
+    return unsorted_list
+
+def brute_force(fire_stations, starting_point,sorting_algorithm):
     start_time = datetime.datetime.now()
     print(f'Finding nearest station..')
     stations=[]
-    #brute force
+
+    #brute force collection of distances for every available node
     for i in fire_stations:
         total_distance=math.sqrt((i.geometry[1]-starting_point.coordinates[0])**2+(i.geometry[0]-starting_point.coordinates[1])**2)
         i.set_distance(total_distance)
         stations.append(i)
 
-    ordered_list=bubble_sort(stations)
+    print(f'Sorting using {sorting_algorithm}_sort')
+    sort_start_time=datetime.datetime.now()
+    #choose your fighter:
+    if sorting_algorithm=='merge':
+        ordered_list=merge_sort(stations)
+    elif sorting_algorithm=='selection':
+        ordered_list=selection_sort(stations)
+    elif sorting_algorithm=='bubble':
+        ordered_list=bubble_sort(stations)
+    sort_end_time=datetime.datetime.now()-sort_start_time
+    print(f'Done sorting, time taken to {sorting_algorithm}_sort was {sort_end_time}')
+
+    #get the minimum distanced node
     minimum_point=ordered_list[0]
     end_time=datetime.datetime.now()-start_time
     print(f'Station found ... {end_time}')
     return minimum_point, stations
 
-def get_stations(starting_point,specified_state,specified_zip_code):
+def get_stations(starting_point,specified_state,specified_zip_code,sorting_algorithm):
     # Get frames information for the specified ZIP code or state
     frames_info = get_frames_by_zip_code_or_state(specified_zip_code, specified_state,gdf)
     # Display the frames information
     print(frames_info)
     fire_stations= create_fire_stations(frames_info)
-    closest_fire_station, other_stations=brute_force(fire_stations,starting_point)
+    closest_fire_station, other_stations=brute_force(fire_stations,starting_point,sorting_algorithm)
     print(f'Closest fire station to disaster at {starting_point.coordinates} is {closest_fire_station.name},\nAt {closest_fire_station.address} with coords: {closest_fire_station.geometry}\n with distance:{closest_fire_station.distance}')
     return closest_fire_station
     
     # for j in other_stations:
     #     print(f'{j.name}, {j.address}, {j.distance}')
 
-#example code
-specified_zip_code = '30080'
-specified_state = 'GA'
-starting_point=Node((33.883647588413304, -84.49361801147461),0)
-target=get_stations(starting_point,specified_state,specified_zip_code)
-
-
+# #example code
+# specified_zip_code = '30080'
+# specified_state = 'GA'
+# starting_point=Node((33.883647588413304, -84.49361801147461),0)
+# target=get_stations(starting_point,specified_state,specified_zip_code,'selection')
 

@@ -14,13 +14,23 @@ def index():
 def handle_data():
     mid_state=request.form['front_state']
     mid_zip=request.form['front_zip']
+    action = request.form.get('action')
     
     json_coords= json.loads(request.form['clickedLocation'])
     lat = json_coords['lat']#json likes to swap order so don't be startled about why they get swapped in the return
     lng = json_coords['lng']
     mid_node=test2.Node((lat,lng),0)
     print(f'Front end data received in flask route:{mid_state},{mid_zip},{mid_node}')
-    back_station=test2.get_stations(mid_node,mid_state,mid_zip)
+
+    if action=='bubble':
+        sorting_algorithm='bubble'
+    elif action=='merge':
+        sorting_algorithm='merge'
+    elif action=='selection':
+        sorting_algorithm='selection'
+
+    back_station=test2.get_stations(mid_node,mid_state,mid_zip,sorting_algorithm)
+
     #test2.get_stations returns fire station object
     #parameters available for fire station object:(self, name, geometry, zip_code, city, state, address, global_id, distance)
     #use back_station.parameter in the return
