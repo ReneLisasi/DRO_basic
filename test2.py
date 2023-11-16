@@ -33,11 +33,25 @@ class Fire_Station:
     def lt(self,other):
         return self.distance < other.distance
     
-def get_frames_by_zip_code_or_state(file_path, zip_code, state):
+def preprocess(file_path):
+    print(f'Preprocessing Fire stations first..')
+    start_time = datetime.datetime.now()
+    
+    # Read the GeoJSON file into a GeoDataFrame
+    gdf = gpd.read_file(file_path)
+    end_time = datetime.datetime.now() - start_time
+
+    print(f'Done preprocessing... {end_time}')
+    return gdf
+
+file_path='Fire_Stations.geojson'
+gdf=preprocess(file_path)
+    
+def get_frames_by_zip_code_or_state(zip_code, state,gdf):
         start_time = datetime.datetime.now()
-        print(f'Preprocessing Fire stations first..')
-        # Read the GeoJSON file into a GeoDataFrame
-        gdf = gpd.read_file(file_path)
+        print(f'SIfting through json by zipcode/state..')
+        # # Read the GeoJSON file into a GeoDataFrame
+        # gdf = gpd.read_file(file_path)
         # Filter the GeoDataFrame based on the specified ZIP code
         frames_in_zip = gdf[gdf['ZIPCODE'] == zip_code]
         # Check the number of fire stations within the ZIP code
@@ -56,22 +70,10 @@ def get_frames_by_zip_code_or_state(file_path, zip_code, state):
         else:
             print(f'No fire stations found in the specified ZIP code or state.')
             end_time = datetime.datetime.now() - start_time
-            print(f'Done preprocessing... {end_time}')
+            print(f'Done sifting... {end_time}')
             return pd.DataFrame()  # Return empty DataFrame if no results found
 
-def brute_force(fire_stations, starting_point):
-    start_time = datetime.datetime.now()
-    print(f'Finding nearest station..')
-    distances=[]
-    #brute force
-    for i in fire_stations:
-        total_distance=math.sqrt((i.geometry[1]-starting_point.coordinates[0])**2+(i.geometry[0]-starting_point.coordinates[1])**2)
-        i.set_distance(total_distance)
-        distances.append(i)
-    minimum_point=min(distances, key=lambda x: x.distance)
-    end_time=datetime.datetime.now()-start_time
-    print(f'Station found ... {end_time}')
-    return minimum_point, distances
+
 
 #populate the list of nearby fire stations
 def create_fire_stations(geodf):
@@ -89,15 +91,39 @@ def create_fire_stations(geodf):
         fire_station = Fire_Station(name, geometry, zip_code, city, state, address, global_id,inf)
         fire_stations.append(fire_station)
 
-        return fire_stations
+    return fire_stations
 
 
 
+def bubble_sort(unordered_list):
+    iteration_number = len(unordered_list)-1
+    for i in range(iteration_number,0,-1):
+        for j in range(i):
+            if unordered_list[j].distance > unordered_list[j+1].distance:
+                temp = unordered_list[j]
+                unordered_list[j] = unordered_list[j+1]
+                unordered_list[j+1] = temp
+    return unordered_list
+
+def brute_force(fire_stations, starting_point):
+    start_time = datetime.datetime.now()
+    print(f'Finding nearest station..')
+    stations=[]
+    #brute force
+    for i in fire_stations:
+        total_distance=math.sqrt((i.geometry[1]-starting_point.coordinates[0])**2+(i.geometry[0]-starting_point.coordinates[1])**2)
+        i.set_distance(total_distance)
+        stations.append(i)
+
+    ordered_list=bubble_sort(stations)
+    minimum_point=ordered_list[0]
+    end_time=datetime.datetime.now()-start_time
+    print(f'Station found ... {end_time}')
+    return minimum_point, stations
 
 def get_stations(starting_point,specified_state,specified_zip_code):
-    file_path='Fire_Stations.geojson'
     # Get frames information for the specified ZIP code or state
-    frames_info = get_frames_by_zip_code_or_state(file_path, specified_zip_code, specified_state)
+    frames_info = get_frames_by_zip_code_or_state(specified_zip_code, specified_state,gdf)
     # Display the frames information
     print(frames_info)
     fire_stations= create_fire_stations(frames_info)
@@ -108,8 +134,11 @@ def get_stations(starting_point,specified_state,specified_zip_code):
     # for j in other_stations:
     #     print(f'{j.name}, {j.address}, {j.distance}')
 
-# #example code
-# specified_zip_code = '30080'
-# specified_state = 'GA'
-# starting_point=Node((33.883647588413304, -84.49361801147461),0)
-# target=get_stations(starting_point,specified_state,specified_zip_code)
+#example code
+specified_zip_code = '30080'
+specified_state = 'GA'
+starting_point=Node((33.883647588413304, -84.49361801147461),0)
+target=get_stations(starting_point,specified_state,specified_zip_code)
+
+
+
